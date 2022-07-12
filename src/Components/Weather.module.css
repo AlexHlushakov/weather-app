@@ -1,0 +1,26 @@
+.container{
+    margin: 0 auto;
+    max-width: 1000px;
+    text-align: center;
+}
+
+
+
+
+
+.hourly_container{
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.hour_card{
+    margin: 40px 10px;
+    flex: 0 0 auto;
+    padding: 5px;
+    width: 200px;
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+}
