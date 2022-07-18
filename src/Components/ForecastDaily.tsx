@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {setBaseUrl, WeatherAPI} from "../api/api";
+import styles from "./Weather.module.scss"
+import WeatherCondition from "./WeatherCondition";
 
 
 type PropTypes = {
@@ -96,12 +98,15 @@ const  ForecastDaily: React.FC<PropTypes> = (props) =>{
         return <div>Loading...</div>
     } else{
         return(
-            <div>
+            <div className={styles.daily_container}>
                 {forecastDaily.map(item =>(
-                    <div key={item.id}>
-                        <b>Date: </b><span>{item.time}</span>
-                        <b>Max Temp: </b><span>{item.temperature_2m_max}°C</span>
-                        <b>Min Temp: </b><span>{item.temperature_2m_min}°C</span>
+                    <div key={item.id} className={styles.daily_block}>
+                        <div className={styles.daily_img_container}>
+                            <WeatherCondition weathercode={item.weathercode}/>
+                        </div>
+                        <b className={styles.daily_date_bold}>Date: </b><span className={styles.daily_date_data}>{item.time}</span>
+                        <b className={styles.daily_maxtemp_bold}>Max Temp: </b><span className={styles.daily_maxtemp_data}>{item.temperature_2m_max}°C</span>
+                        <b className={styles.daily_mintemp_bold}>Min Temp: </b><span className={styles.daily_mintemp_data}>{item.temperature_2m_min}°C</span>
                     </div>
                     ))}
             </div>

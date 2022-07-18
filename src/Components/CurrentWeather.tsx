@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {setBaseUrl, WeatherAPI} from "../api/api";
-import clear from '../assets/img/clear.png'
-import mainlyClear from '../assets/img/mainly-clear.png'
-import partlyCloudy from '../assets/img/partly-cloudy.png'
-import overcast from '../assets/img/overcast.png'
+import ForecastHourly from "./ForecastHourly";
+import WeatherCondition from "./WeatherCondition";
+import styles from './Weather.module.scss'
 
 
 type PropTypes = {
@@ -55,23 +54,6 @@ const CurrentWeather: React.FC<PropTypes> = (props) =>{
     }, [props.location.locationParameters])
 
 
-    const getWeatherCondition = (code:number) =>{
-        switch (code) {
-            case 0:{
-                return clear
-            }
-            case 1:{
-                return mainlyClear
-            }
-            case 2:{
-                return partlyCloudy
-            }
-            case 3:{
-                return overcast
-            }
-        }
-    }
-
     const handleClick = () =>{
         props.changeLocation(false)
     }
@@ -84,19 +66,21 @@ const CurrentWeather: React.FC<PropTypes> = (props) =>{
         return(
             <main>
                 <div>
-                    <h2>Alex Weather</h2>
-                    <b>Location: </b><span>{props.location.locationCity}</span>
-                    <button onClick={handleClick}>Change Location</button>
-                    <br/>
-                    <a href="https://open-meteo.com/">Weather data by Open-Meteo.com</a>
-                    <div>
-                            <div>
-                                <img src={getWeatherCondition(currentWeather.weathercode)} alt=""/>
-                            </div>
-                            <span>{Math.round(currentWeather.temperature)}°C</span>
-                            <p>{currentWeather.time.replace('T', ' ')}</p>
+                    <div className={styles.app_header}>
+                        <h2>Alex Weather</h2>
+                        <div>
+                            <b>Location: </b><span>{props.location.locationCity}</span>
+                        </div>
+                        <button onClick={handleClick}>Change Location</button>
+                        <a href="https://open-meteo.com/">Weather data by Open-Meteo.com</a>
+                    </div>
+                    <div className={styles.current_weather_block}>
+                            <WeatherCondition weathercode={currentWeather.weathercode}/>
+                            <span className={styles.current_weather_temp}>{Math.round(currentWeather.temperature)}°C</span>
+                            <span className={styles.current_weather_date}>{currentWeather.time.replace('T', ' ')}</span>
                     </div>
                 </div>
+                <ForecastHourly location={props.location} currentTime={currentWeather.time}/>
             </main>
         )
     }

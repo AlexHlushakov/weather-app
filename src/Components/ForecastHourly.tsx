@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {setBaseUrl, WeatherAPI} from "../api/api";
-import styles from "./Weather.module.css"
+import styles from "./Weather.module.scss"
+import WeatherCondition from "./WeatherCondition";
 
 
 type PropTypes = {
@@ -13,7 +14,8 @@ type PropTypes = {
             },
         locationCity: string,
         country_code: string
-    }
+    },
+    currentTime: string
 }
 
 type ForecastObject = {
@@ -56,7 +58,8 @@ const  ForecastHourly: React.FC<PropTypes> =(props) =>{
             let response = await WeatherAPI.getHourlyWeather();
             Promise.all([response]).then(() =>{
                 responseContainer = response;
-                for(let i = 0; i < 36; i++){
+                let currentHour = parseInt(props.currentTime.slice(-5, -3));
+                for(let i = currentHour; i < currentHour + 24; i++){
                     if(responseContainer.time[i] !== undefined){
                         let timeFormat = responseContainer.time[i].slice(-5, responseContainer.time[i].length)
                           let newElement: ForecastObject = {
@@ -89,10 +92,27 @@ const  ForecastHourly: React.FC<PropTypes> =(props) =>{
             <div className={styles.hourly_container}>
                 {forecastHourly.map(item => (
                     <div key={item.id} className={styles.hour_card}>
-                        <span id={item.id.toString()}>{item.time}</span>
-                        <b>Temperature: </b><span>{item.temperature_2m}°C</span>
-                        <b>feels like: </b><span>{item.apparent_temperature}°C</span>
-                    </div>
+                        <WeatherCondition weathercode={item.weathercode}/>
+                        <span id={item.id.toString()} style={{
+                            fontSize: "24px", fontWeight: "400"
+                        }}>{item.time}</span>
+                        <span style={{
+                            fontSize: "26px", fontWeight: "300",
+                            paddingTop: "10px"
+                        }}>{item.temperature_2m}°C</span>
+                        <div style={{
+                            padding: "10px 0"
+                        }}>
+                            <span style={{
+                                fontSize: "18px", fontWeight: "400",
+                                paddingTop: "10px"
+                            }}>Feels like: </span>
+                            <span style={{
+                                fontSize: "22px", fontWeight: "300",
+                                paddingTop: "10px"
+                            }}>{item.apparent_temperature}°C</span>
+                        </div>
+                         </div>
                     ))}
             </div>
         )

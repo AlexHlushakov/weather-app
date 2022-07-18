@@ -1,19 +1,24 @@
 import React, { useEffect, useState} from 'react';
 import CurrentWeather from "./CurrentWeather";
-import ForecastHourly from "./ForecastHourly";
 import ForecastDaily from "./ForecastDaily";
 import {LocationAPI} from "../api/api";
-import styles from "./Weather.module.css"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import styles from "./Weather.module.scss"
 
 
 const Weather = () =>{
+
+    const notifyError = (msg: string) => {
+        toast.error(msg)
+    }
 
     const [loading, setLoading] = useState(true)
     const [location, setLocation] = useState({locationParameters: {latitude: 50.4375, longitude: 30.5625, timeZone: 'Europe/Moscow'}, locationCity: 'Kiev', country_code: 'UA'})
     const [isLocationStored, setIsLocationStored] = useState(true)
     const [searchResult, setSearchResult] = useState ([
         {"id": 0,
-        "name": '',
+        "name": 'No name',
         "latitude": 0,
         "longitude": 0,
         "country_code": '',
@@ -21,8 +26,8 @@ const Weather = () =>{
         "timezone": '',
         "population": 0,
         "country_id": 0,
-        "country": '',
-        "admin1": ''}
+        "country": 'No Data',
+        "admin1": 'No Data'}
     ] )
     const [inputValue, setInputValue] = useState('')
 
@@ -54,7 +59,14 @@ const Weather = () =>{
     }
 
     const searchLocation = (city: string) =>{
-        LocationAPI.searchLocation(city).then(response => setSearchResult(response))
+        LocationAPI.searchLocation(city).then(response => {
+            console.log(response)
+            if(response !== undefined){
+                setSearchResult(response)
+            } else {
+                notifyError("City does not exist or typo")
+            }
+        })
     }
 
     const setNewLocation = (event: React.MouseEvent) =>{
@@ -84,27 +96,29 @@ const Weather = () =>{
            return(
                <div className={styles.container}>
                    <CurrentWeather location={location} changeLocation={setIsLocationStored}/>
-                   <ForecastHourly location={location}/>
                    <ForecastDaily location={location}/>
                </div>
            )
         } else{
             return(
-                <div>
+                <div className={styles.search_container}>
                     <div>
                         <input type="text" placeholder="Enter City Name" onKeyDown={keyPress} onChange={handleChange} value={inputValue} />
                     </div>
-                    <div>
+                    <div style={{
+                        marginBottom: "50px"
+                    }}>
                         {searchResult.map(city =>(
-                            <div key={city.id} id={city.id.toString()} onClick={setNewLocation}>
-                                <span>{city.name} </span>
-                                <span>{city.latitude} </span>
-                                <span>{city.longitude} </span>
-                                <span>{city.country} </span>
-                                <span>{city.admin1}</span>
+                            <div className={styles.search_card} key={city.id} id={city.id.toString()} onClick={setNewLocation}>
+                                <span className={styles.search_card_name}>{city.name} </span>
+                                <span className={styles.search_card_latitude}>{city.latitude} </span>
+                                <span className={styles.search_card_longitude}>{city.longitude} </span>
+                                <span className={styles.search_card_country}>{city.country} </span>
+                                <span className={styles.search_card_area}>{city.admin1}</span>
                             </div>
                         ))}
                     </div>
+                    <ToastContainer/>
                 </div>
             )
         }

@@ -1,0 +1,302 @@
+$main-color: #51A0D5;
+$white: #fff;
+$black: #000;
+$project-yellow: #ffcd00;
+
+@mixin border-shadow{
+    border: 1px solid $white;
+    box-shadow: 0 0 6px 6px $white;
+}
+
+@mixin flex-column{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.search_container{
+    @include flex-column;
+    width: 100%;
+    max-width: 1000px;
+    height: max-content;
+    min-height:100vh;
+    background-color: $main-color;
+}
+
+.search_container input{
+    margin-top: 50px;
+    margin-bottom: 15px;
+    height: 30px;
+    width: 300px;
+    text-align: center;
+}
+
+.search_card{
+    margin: 10px 0;
+    width: 100%;
+    max-width: 550px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.5s ease;
+}
+
+.search_card:hover{
+    transform: scale(1.05);
+    background-color: $white;
+    color: $black;
+}
+
+.search_card_name{
+    width: 100px;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.search_card_latitude, .search_card_longitude{
+    width: 100px;
+    font-weight: 300;
+}
+
+.search_card_country{
+    width: 150px;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.search_card_area{
+    width: 100px;
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.container{
+    margin: 0 auto;
+    max-width: 1000px;
+    text-align: center;
+    background-color: #51A0D5;
+}
+
+
+.current_weather_block{
+    margin: 0 auto;
+    padding-top: 10px;
+    @include flex-column;
+    width: 100%;
+    max-width: 500px;
+}
+
+.current_weather_temp{
+    font-size: 36px;
+    font-weight: 300;
+}
+
+.current_weather_date{
+    font-size: 18px;
+    font-weight: 400;
+    padding-top: 10px;
+}
+
+.app_header{
+    @include flex-column;
+    padding-top: 30px;
+    height: max-content;
+    justify-content: space-around;
+}
+
+.app_header>h2{
+    margin: 5px 0;
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.app_header>a{
+    font-size: 12px;
+    color: #fff;
+    margin-top: 10px;
+}
+
+.app_header>button{
+    margin-top: 5px;
+    height: 30px;
+    width: 150px;
+    border-radius: 5px;
+    border: 1px solid $project-yellow;
+    background-color: $project-yellow;
+    color: darkblue;
+    transition: all 0.5s ease;
+}
+
+.app_header>button:hover{
+    transform: scale(1.1);
+    border: 1px solid darkblue;
+    background-color: darkblue;
+    color: $white;
+}
+
+
+
+.hourly_container{
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 950px;
+    border-left: 2px solid $white;
+    border-right: 2px solid $white;
+}
+
+.hour_card{
+    margin: 30px 15px;
+    flex: 0 0 auto;
+    padding: 5px;
+    width: 200px;
+    max-width: 200px;
+    border-radius: 15px;
+    @include flex-column;
+    @include border-shadow;
+}
+
+.weather_img_block{
+    margin: 0 auto;
+    width: 50%;
+}
+
+.weather_img{
+    position: relative;
+    width: 100%;
+    height: auto;
+    object-fit: scale-down;
+}
+
+.daily_container{
+    margin: 0 auto;
+    @include flex-column;
+    padding: 20px;
+    max-width: 800px;
+}
+
+.daily_block{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    @include border-shadow;
+    border-radius: 15px;
+    margin: 15px 5px;
+    max-width: 800px;
+    height: 100px;
+    padding: 10px;
+}
+
+.daily_date_bold, .daily_maxtemp_bold, .daily_mintemp_bold{
+    display: inline-block;
+    width: max-content;
+    font-size: 18px;
+}
+
+.daily_date_data, .daily_maxtemp_data, .daily_mintemp_data{
+    display: inline-block;
+    width: max-content;
+}
+
+.daily_maxtemp_data, .daily_mintemp_data{
+    font-size: 20px;
+
+}
+
+.daily_img_container{
+    width: 25%;
+}
+
+@media only screen and (max-width: 767.98px) {
+    .daily_block{
+        padding: 15px 5px;
+        max-width: 450px;
+        display: grid;
+        grid-template-columns: 3fr 2fr;
+        grid-template-rows: repeat(3, 1fr);
+        grid-template-areas: "daily-i daily-date"
+    "daily-i daily-maxtemp"
+    "daily-i daily-mintemp";
+    }
+
+    .daily_img_container{
+        grid-area: daily-i;
+        width: 100%;
+    }
+
+    .daily_date_data{
+        grid-area: daily-date;
+        font-size: 14px;
+        font-weight: 300;
+    }
+
+    .daily_maxtemp_data{
+        grid-area: daily-maxtemp;
+        font-size: 24px;
+        font-weight: 400;
+    }
+
+    .daily_mintemp_data{
+        grid-area: daily-mintemp;
+        font-size: 18px;
+        font-weight: 300;
+    }
+
+    .daily_date_bold, .daily_maxtemp_bold, .daily_mintemp_bold{
+        display: none;
+    }
+
+
+    .search_container input{
+        width: 250px;
+        text-align: center;
+    }
+
+    .search_card{
+        height: 70px;
+        display: grid;
+        width: 250px;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: repeat(3, 1fr);
+        grid-template-areas:
+                "city latitude"
+                "city longitude"
+                "country area";
+        justify-items: center;
+        padding:5px;
+    }
+
+    .search_card_name{
+        grid-area: city;
+        font-size: 18px;
+    }
+
+    .search_card_latitude{
+        grid-area: latitude;
+    }
+
+    .search_card_longitude{
+        grid-area: longitude;
+    }
+
+    .search_card_country{
+        grid-area: country;
+        width: 100px;
+        font-size: 14px;
+    }
+
+    .search_card_area{
+        grid-area: area;
+        width: 100px;
+        font-size: 14px;
+        font-weight: 400;
+    }
+}
